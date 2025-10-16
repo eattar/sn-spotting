@@ -93,7 +93,9 @@ class ListManager:
 					tmp_visibility = "default"
 					if "visibility" in event:
 						tmp_visibility = event["visibility"]
-					event_list.append(Event(tmp_label, tmp_half, tmp_time, tmp_team, tmp_position, tmp_visibility))
+					# Handle optional confidence field (predictions have it)
+					tmp_confidence = event.get("confidence", None)
+					event_list.append(Event(tmp_label, tmp_half, tmp_time, tmp_team, tmp_position, tmp_visibility, tmp_confidence))
 		return event_list
 
 	def save_file(self, path, half):
