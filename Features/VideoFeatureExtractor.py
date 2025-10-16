@@ -13,8 +13,11 @@ try:
     # from tensorflow.keras.preprocessing.image import img_to_array
     # from tensorflow.keras.preprocessing.image import load_img
     from tensorflow import keras
-except:
-    print("issue loading TF2")
+    import tensorflow as tf
+    # Disable TF32 to avoid cuBLAS math mode issues
+    tf.config.experimental.enable_tensor_float_32_execution(False)
+except Exception as e:
+    print(f"issue loading TF2: {e}")
     pass
 import os
 # import argparse

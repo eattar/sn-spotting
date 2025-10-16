@@ -15,6 +15,10 @@ import torch
 import logging
 import json
 
+# Fix TensorFlow/CUDA compatibility issues
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_ENABLE_CUBLAS_TENSOR_OP_MATH_FP32'] = '0'
+
 from SoccerNet.Downloader import SoccerNetDownloader
 from Features.VideoFeatureExtractor import VideoFeatureExtractor, PCAReducer
 
