@@ -77,6 +77,9 @@ class MediaPlayer(QWidget):
 	def get_last_label_file(self):
 		path_label = self.path_label
 		folder_label = os.path.dirname(path_label)
+		# Check for predictions first, then labels
+		if os.path.isfile(folder_label + "/Predictions-v2.json"):
+			return folder_label + "/Predictions-v2.json"
 		if os.path.isfile(folder_label + "/Labels-v2.json"):
 			return folder_label + "/Labels-v2.json"
 		else:
