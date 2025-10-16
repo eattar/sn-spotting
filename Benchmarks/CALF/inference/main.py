@@ -40,7 +40,7 @@ def main(args):
 
     
     # Load the best model and compute its performance
-    checkpoint = torch.load(os.path.join("models", args.model_name, "model.pth.tar"))
+    checkpoint = torch.load(os.path.join("..", "models", args.model_name, "model.pth.tar"))
     model.load_state_dict(checkpoint['state_dict'])
 
     test(test_loader, model=model, model_name=args.model_name, save_predictions=True)
@@ -94,8 +94,8 @@ if __name__ == '__main__':
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % args.loglevel)
 
-    os.makedirs(os.path.join("models", args.model_name), exist_ok=True)
-    log_path = os.path.join("models", args.model_name,
+    os.makedirs(os.path.join("..", "models", args.model_name), exist_ok=True)
+    log_path = os.path.join("..", "models", args.model_name,
                             datetime.now().strftime('%Y-%m-%d_%H-%M-%S.log'))
     logging.basicConfig(
         level=numeric_level,
