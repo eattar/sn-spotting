@@ -29,6 +29,9 @@ class SoccerNetClipsTesting(Dataset):
         self.num_classes = 17
         self.num_detections =15
 
+        # Create outputs directory if it doesn't exist
+        os.makedirs("inference/outputs", exist_ok=True)
+
         #Changing video format to 
         ff = ffmpy.FFmpeg(
              inputs={self.path: ""},
