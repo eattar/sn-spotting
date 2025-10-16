@@ -22,7 +22,9 @@ def test(dataloader,model, model_name, save_predictions=False):
     with tqdm(enumerate(dataloader), total=len(dataloader), ncols=120) as t:
         for i, (feat_half1, size) in t:
 
-            feat_half1 = feat_half1.cuda().squeeze(0)
+            # Move to same device as model
+            device = next(model.parameters()).device
+            feat_half1 = feat_half1.to(device).squeeze(0)
 
 
             feat_half1=feat_half1.unsqueeze(1)
