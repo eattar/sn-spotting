@@ -84,7 +84,18 @@ class MediaPlayer(QWidget):
 			
 			if self.path_label and os.path.exists(self.path_label):
 				self.main_window.list_manager.create_list_from_json(self.path_label, self.main_window.half)
+				
+				# If no events found, try the other half
+				if len(self.main_window.list_manager.event_list) == 0:
+					print(f"[DEBUG] No events found for half {self.main_window.half}, trying other half")
+					other_half = 1 if self.main_window.half == 2 else 2
+					self.main_window.list_manager.create_list_from_json(self.path_label, other_half)
+					if len(self.main_window.list_manager.event_list) > 0:
+						self.main_window.half = other_half
+						print(f"[DEBUG] Found events in half {other_half}, switching to that half")
+				
 				self.main_window.list_display.display_list(self.main_window.list_manager.create_text_list())
+				print(f"[DEBUG] Displaying {len(self.main_window.list_manager.event_list)} events")
 			else:
 				print(f"[DEBUG] No label file found at {self.path_label}")
 
