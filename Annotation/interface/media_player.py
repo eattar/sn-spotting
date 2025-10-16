@@ -67,12 +67,26 @@ class MediaPlayer(QWidget):
 			self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(filename)))
 			self.play_button.setEnabled(True)
 			filpath = os.path.basename(filename)
-			self.main_window.half = int(filpath[0])
+			
+			# Try to detect half from filename, default to 1
+			try:
+				self.main_window.half = int(filpath[0])
+				if self.main_window.half not in [1, 2]:
+					self.main_window.half = 1
+			except:
+				self.main_window.half = 1
+			
+			print(f"[DEBUG] Opened video: {filename}, detected half: {self.main_window.half}")
 
 			self.path_label = os.path.dirname(filename) + "/Labels.json"
 			self.path_label = self.get_last_label_file()
-			self.main_window.list_manager.create_list_from_json(self.path_label, self.main_window.half)
-			self.main_window.list_display.display_list(self.main_window.list_manager.create_text_list())
+			print(f"[DEBUG] Looking for labels at: {self.path_label}")
+			
+			if self.path_label and os.path.exists(self.path_label):
+				self.main_window.list_manager.create_list_from_json(self.path_label, self.main_window.half)
+				self.main_window.list_display.display_list(self.main_window.list_manager.create_text_list())
+			else:
+				print(f"[DEBUG] No label file found at {self.path_label}")
 
 	def get_last_label_file(self):
 		path_label = self.path_label

@@ -13,6 +13,7 @@ class ListManager:
 		self.event_list.clear()
 		self.event_list = self.read_json(path, half)
 		self.sort_list()
+		print(f"[DEBUG] Loaded {len(self.event_list)} events from {path} for half {half}")
 
 	def create_text_list(self):
 
@@ -59,18 +60,22 @@ class ListManager:
 	def read_json(self, path, half):
 
 		event_list = list()
+		print(f"[DEBUG] Reading JSON from: {path}")
 		with open(path) as file:
 			json_data = json.load(file)
 			# Support both "annotations" (ground truth) and "predictions" (model output)
 			if "annotations" in json_data:
 				data = json_data["annotations"]
+				print(f"[DEBUG] Found 'annotations' key with {len(data)} entries")
 			elif "predictions" in json_data:
 				data = json_data["predictions"]
+				print(f"[DEBUG] Found 'predictions' key with {len(data)} entries")
 			else:
 				raise KeyError("JSON file must contain either 'annotations' or 'predictions' key")
 
 			for event in data:
 				tmp_half = int(event["gameTime"][0])
+				print(f"[DEBUG] Processing event: half={tmp_half}, looking for half={half}, gameTime={event['gameTime']}, label={event['label']}")
 				if tmp_half == half:
 					tmp_time = event["gameTime"][4:]
 					tmp_position = 0
