@@ -34,12 +34,12 @@ class SoccerNetClipsTesting(Dataset):
         self.num_detections =15
 
         # Create outputs directory if it doesn't exist
-        os.makedirs("inference/outputs", exist_ok=True)
+        os.makedirs("outputs", exist_ok=True)
 
         #Changing video format to 
         ff = ffmpy.FFmpeg(
              inputs={self.path: ""},
-             outputs={"inference/outputs/videoLQ.mkv": '-y -r 25 -vf scale=-1:224 -max_muxing_queue_size 9999'})
+             outputs={"outputs/videoLQ.mkv": '-y -r 25 -vf scale=-1:224 -max_muxing_queue_size 9999'})
         print(ff.cmd)
         ff.run()
 
@@ -52,17 +52,17 @@ class SoccerNetClipsTesting(Dataset):
             FPS=self.framerate)
 
         print("Extracting frames")
-        myFeatureExtractor.extractFeatures(path_video_input="inference/outputs/videoLQ.mkv",
-                                           path_features_output="inference/outputs/features.npy",
+        myFeatureExtractor.extractFeatures(path_video_input="outputs/videoLQ.mkv",
+                                           path_features_output="outputs/features.npy",
                                            overwrite=True)
 
         print("Initializing PCA reducer")
-        myPCAReducer = PCAReducer(pca_file="inference/Features/pca_512_TF2.pkl",
-                                  scaler_file="inference/Features/average_512_TF2.pkl")
+        myPCAReducer = PCAReducer(pca_file="Features/pca_512_TF2.pkl",
+                                  scaler_file="Features/average_512_TF2.pkl")
 
         print("Reducing with PCA")
-        myPCAReducer.reduceFeatures(input_features="inference/outputs/features.npy",
-                                    output_features="inference/outputs/features_PCA.npy",
+        myPCAReducer.reduceFeatures(input_features="outputs/features.npy",
+                                    output_features="outputs/features_PCA.npy",
                                     overwrite=True)
 
 
@@ -73,7 +73,7 @@ class SoccerNetClipsTesting(Dataset):
 
         
         # Load features
-        feat_half1 = np.load(os.path.join("inference/outputs/features_PCA.npy"))
+        feat_half1 = np.load(os.path.join("outputs/features_PCA.npy"))
         print("Shape half 1: ", feat_half1.shape)
         size = feat_half1.shape[0]
 

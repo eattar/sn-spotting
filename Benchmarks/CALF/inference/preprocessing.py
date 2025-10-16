@@ -131,7 +131,7 @@ def visualize(detections_numpy, segmentations_numpy, class_num=0):
         plt.xlabel("Game Time (in minutes)", fontsize=20)
         plt.ylabel("Segmentation Score", fontsize=20, color="tab:orange", alpha=0.75)
         plt.title(INVERSE_EVENT_DICTIONARY_V2[class_num], fontsize=20)
-        plt.savefig("inference/outputs/"+str(class_num)+".png")
+        plt.savefig("outputs/"+str(class_num)+".png")
         plt.close()
 
 def NMS(detections, delta):

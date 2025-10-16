@@ -47,7 +47,7 @@ def test(dataloader,model, model_name, save_predictions=False):
 
 
     # Save the predictions to the json format
-    predictions2json(detections_numpy[0],"inference/outputs/", model.framerate)
+    predictions2json(detections_numpy[0],"outputs/", model.framerate)
 
     #Save the predictions
     for i in np.arange(17):
