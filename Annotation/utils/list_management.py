@@ -60,7 +60,14 @@ class ListManager:
 
 		event_list = list()
 		with open(path) as file:
-			data = json.load(file)["annotations"]
+			json_data = json.load(file)
+			# Support both "annotations" (ground truth) and "predictions" (model output)
+			if "annotations" in json_data:
+				data = json_data["annotations"]
+			elif "predictions" in json_data:
+				data = json_data["predictions"]
+			else:
+				raise KeyError("JSON file must contain either 'annotations' or 'predictions' key")
 
 			for event in data:
 				tmp_half = int(event["gameTime"][0])
@@ -76,7 +83,8 @@ class ListManager:
 						tmp_label = self.soccerNetToV2(event["label"])
 					else:
 						tmp_label = event["label"]
-					tmp_team = event["team"]
+					# Handle optional team field (predictions may not have it)
+					tmp_team = event.get("team", "Unknown")
 					tmp_visibility = "default"
 					if "visibility" in event:
 						tmp_visibility = event["visibility"]
